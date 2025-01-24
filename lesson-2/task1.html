@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Task 1</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+<body>
+    <div id="myApp">
+        <label>
+            Login <input type="text" v-model="userLogin">
+        </label>
+        <hr>
+        <label>
+            Password <input type="password" v-model="userPassword">
+        </label>
+        <br>
+        <br>
+        <button type="button" @click="handleLoginClick">Login</button>
+        <br>
+        <br>
+        <template v-if="loggedInUser">
+            <div v-if="loggedInUser === 'sun'">🙂</div>
+            <div style="color:blue" v-else-if="loggedInUser === 'іван'">Це Іван</div>
+            <div style="color:red" v-else>Користувача не знайдено</div>
+        </template>
+        <hr>
+        <div>Login — <b>{{loggedInUser}}</b></div>
+    </div>
+
+    <script>
+        const { createApp } = Vue;
+
+        const userData = [
+            {
+                login: 'іван',
+                password: 'qwerty123',
+            },
+            {
+                login: 'asdas',
+                password: 'valopi',
+            },
+            {
+                login: 'oleksii',
+                password: 'qwerty123',
+            },
+            {
+                login: 'sun',
+                password: 'useradmin12',
+            },
+            {
+                login: 'dog',
+                password: 'cat',
+            }
+        ];
+
+        const app = createApp({
+            data() {
+                return {
+                    userLogin: '',
+                    userPassword: '',
+                    loggedInUser: '',
+                }
+            },
+            methods: {
+                handleLoginClick() {
+                    if (this.userLogin && this.userPassword) {
+                        const result = userData.some(item => item.login === this.userLogin && item.password === this.userPassword);
+                        if (result) {
+                            this.loggedInUser = this.userLogin;
+                        } else {
+                            this.loggedInUser = 'Wrong login or password!';
+                        }
+                    }
+                }
+            },
+        });
+
+        app.mount('#myApp');
+    </script>
+</body>
+</html>

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Task 2</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <style>
+        .plane {
+            width: 350px;
+            height: 350px;
+            position: relative;
+        }
+
+        .ticket {
+            display: flex;
+            align-content: center;
+        }
+
+        .ticket  h2{
+            margin: 0;
+        }
+
+        .ticket select {
+            width: 200px;
+            height: 40px;
+            margin-left: 20px;
+            display: block;
+        }
+
+        .plane__bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.5;
+        }
+
+        .plane__bg img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .plane select {
+            width: 200px;
+            height: 40px;
+            margin-left: 20px;
+            display: block;
+        }
+
+        .plane__wrapper {
+            position: relative;
+        }
+    </style></head>
+<body>
+<div id="myApp">
+    <div class="ticket">
+        <h2>Виберіть клас квитка у літаку</h2>
+        <label>
+            <select v-model="planeClass">
+                <option value="business">Бізнес клас</option>
+                <option value="economy">Економ клас</option>
+            </select>
+        </label>
+    </div>
+    <hr>
+    <template v-if="isCheckPlane">
+        <div v-if="isBusinessClass" class="plane">
+            <div class="plane__bg">
+                <img :src="photoBusiness" alt="">
+            </div>
+            <div class="plane__wrapper">
+                <h2>Eлементи для вибору бізнес класу</h2>
+                <select v-model="businessClassOptions">
+                    <option value="newspapers">Газети</option>
+                    <option value="cognac">Коньяк</option>
+                </select>
+                <div v-if="businessClassCognac">
+                    <h2>Бажаєте закуску</h2>
+                    <select>
+                        <option>Так</option>
+                        <option>Ні</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div v-else class="plane">
+            <div class="plane__bg">
+                <img :src="photoEconomy" alt="">
+            </div>
+            <div class="plane__wrapper">
+                <h2>Eлементи для вибору економ класу</h2>
+                <select>
+                    <option value="beer">Пиво</option>
+                    <option value="сhips">Чіпси</option>
+                </select>
+            </div>
+        </div>
+    </template>
+</div>
+
+<script>
+    const { createApp } = Vue;
+    const photoBusiness = "https://media.istockphoto.com/id/477807400/photo/aircraft-seats-and-windows.jpg?s=612x612&w=0&k=20&c=pFCXnClz3h00qQEypGguC4cjOz96Rrrcp0WiWpaJons=";
+    const photoEconomy = "https://images.pexels.com/photos/53594/blue-clouds-day-fluffy-53594.jpeg?cs=srgb&dl=pexels-pixabay-53594.jpg&fm=jpg";
+
+    const app = createApp({
+        data() {
+            return {
+                planeClass: null,
+                businessClassOptions: null
+            }
+        },
+        computed: {
+            isCheckPlane() {
+                return this.planeClass
+            },
+
+            photoBusiness() {
+                return photoBusiness
+            },
+
+            photoEconomy() {
+                return photoEconomy
+            },
+
+            isBusinessClass() {
+                return this.planeClass === 'business'
+            },
+
+            businessClassCognac() {
+                return this.businessClassOptions === 'cognac'
+            }
+        }
+    });
+
+    app.mount('#myApp');
+</script>
+</body>
+</html>
