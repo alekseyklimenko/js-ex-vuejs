@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Task 2</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+<body>
+<div id="myApp">
+    <label>
+        Введіть номер місяця (від 1 до 12)<br>
+        <input min="1" max="12" type="number" v-model="month">
+    </label>
+    <button type="button" @click="handleClick">Результат</button>
+    <div>
+        <p>Рекомендоаний одяг — {{season.clothing}}</p>
+        <img :src="season.image" style="object-fit: cover;" width="500" height="500" alt="image">
+    </div>
+</div>
+
+<script>
+    const { createApp } = Vue;
+
+    const months2seasons = {
+        [1]: 'winter',
+        [2]: 'winter',
+        [3]: 'spring',
+        [4]: 'spring',
+        [5]: 'spring',
+        [6]: 'summer',
+        [7]: 'summer',
+        [8]: 'summer',
+        [9]: 'autumn',
+        [10]: 'autumn',
+        [11]: 'autumn',
+        [12]: 'winter'
+    };
+
+    const seasons = {
+        winter: {
+            clothing: 'тепла куртка',
+            image: 'https://media.istockphoto.com/id/645466274/photo/fantastic-winter-landscape-magic-sunset-in-the-mountains-a-fros.jpg?s=612x612&w=0&k=20&c=W4KrssvdpsEcIvi6THodtTpyI_8udSitk0YmfI2EFC0='
+        },
+        spring: {
+            clothing: 'легка куртка',
+            image: 'https://media.istockphoto.com/id/466249702/photo/path-through-bluebell-woods.jpg?s=612x612&w=0&k=20&c=zFYMK9WEsmGmr2b5q9R0HwmpHf7y1W1TG5S9YpOk8ZE='
+        },
+        summer: {
+            clothing: 'фуболка',
+            image: 'https://thumbs.dreamstime.com/b/clean-lake-green-spring-summer-forest-tranquil-blue-sunny-sky-33453556.jpg'
+        },
+        autumn: {
+            clothing: 'легка куртка',
+            image: 'https://thumbs.dreamstime.com/b/autumn-fall-forest-path-red-leaves-towards-light-natural-afternoon-sun-romantic-mood-46805649.jpg'
+        }
+    };
+
+    const app = createApp({
+        data() {
+            return {
+                month: null,
+                season: {
+                    clothing: '',
+                    image: 'https://media.istockphoto.com/id/1222357475/vector/image-preview-icon-picture-placeholder-for-website-or-ui-ux-design-vector-illustration.jpg?s=612x612&w=0&k=20&c=KuCo-dRBYV7nz2gbk4J9w1WtTAgpTdznHu55W9FjimE='
+                }
+            }
+        },
+
+        methods: {
+            handleClick() {
+                let month = Number(this.month);
+                month = month < 1 ? 1 : month > 12 ? 12 : month;
+                this.season = seasons[months2seasons[month]];
+            }
+        },
+    });
+
+    app.mount('#myApp');
+</script>
+</body>
+</html>

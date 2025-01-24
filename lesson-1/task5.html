@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+<body>
+    <div id="myApp">
+        <label>
+            Login <input type="text" v-model="userLogin">
+        </label>
+        <hr>
+        <label>
+            Password <input type="password" v-model="userPassword">
+        </label>
+        <hr>
+        <button @click="handleLoginClick">Go</button>
+        <p>Logged in user — {{loggedInUser}}</p>
+    </div>
+
+    <script>
+        const { createApp } = Vue;
+
+        const userData = [
+            {
+                login: 'bold',
+                password: 1631415,
+            },
+            {
+                login: 'asdas',
+                password: 'valopi',
+            },
+            {
+                login: 'oleksii',
+                password: 'qwerty123',
+            },
+            {
+                login: 'sun',
+                password: 'useradmin12',
+            },
+            {
+                login: 'dog',
+                password: 'cat',
+            }
+        ];
+
+        const app = createApp({
+            data() {
+                return {
+                    userLogin: '',
+                    userPassword: '',
+                    loggedInUser: '',
+                }
+            },
+            methods: {
+                handleLoginClick() {
+                    if (this.userLogin && this.userPassword) {
+                        const result = userData.some(item => item.login === this.userLogin && item.password === this.userPassword);
+                        if (result) {
+                            this.loggedInUser = this.userLogin;
+                        } else {
+                            this.loggedInUser = 'Wrong login or password!';
+                        }
+                    }
+                }
+            },
+        });
+
+        app.mount('#myApp');
+    </script>
+</body>
+</html>

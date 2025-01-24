@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Task 4</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <style>
+        .red {
+            color: red;
+        }
+        .green {
+            color: green;
+        }
+    </style>
+</head>
+<body>
+<div id="myApp">
+    <div :class="balanceClass">Сума на рахунку: <span>{{compCurrentAmount}}</span>грн</div>
+    <br>
+    <label>
+        Зарахувати на рахунок:
+        <input type="number" v-model.number="depositAmount">
+        <button type="button" @click="depositToAccount">Зарахувати</button>
+    </label>
+    <br>
+    <label>
+        Зняти з рахунку:
+        <input type="number" v-model.number="withdrawAmount">
+        <button type="button" @click="withdrawFromAccount">Зняти</button>
+    </label>
+    <br><br>
+    <div>Відсотки за обслуговування: <span>{{compTaxAmount}}</span>грн</div>
+    <hr>
+    <br>
+    <div>Сума у доларах: $<span>{{compDollarAmount}}</span></div>
+    <div>Сума у євро: Є<span>{{compEuroAmount}}</span></div>
+</div>
+
+<script>
+    const { createApp } = Vue;
+
+    const taxRate = 3;
+    const dollarRate = 4230;
+    const euroRate = 4425;
+
+    const app = createApp({
+        data() {
+            return {
+                currentAmount: 0,
+                depositAmount: 0,
+                withdrawAmount: 0,
+                dollarAmount: 0,
+                euroAmount: 0,
+                taxAmount: 0
+            }
+        },
+
+        methods: {
+            depositToAccount() {
+                if (this.depositAmount > 0) {
+                    const amount = this.depositAmount * 100;
+                    this.taxAmount = Math.ceil(amount * taxRate / 100);
+                    this.currentAmount = this.currentAmount + amount - this.taxAmount;
+                } else {
+                    alert('You can deposit only positive amount');
+                }
+            },
+
+            withdrawFromAccount() {
+                const amount = this.withdrawAmount * 100;
+                const taxAmount = Math.ceil(amount * taxRate / 100);
+                if (this.withdrawAmount > 0 && amount + taxAmount <= this.currentAmount) {
+                    this.taxAmount = taxAmount;
+                    this.currentAmount = this.currentAmount - amount - taxAmount;
+                } else {
+                    alert('You can\'t withdraw this amount');
+                }
+            },
+        },
+
+        computed: {
+            compCurrentAmount() {
+                return (this.currentAmount / 100).toFixed(2);
+            },
+
+            compDollarAmount() {
+                return (this.currentAmount / dollarRate).toFixed(2);
+            },
+
+            compEuroAmount() {
+                return (this.currentAmount / euroRate).toFixed(2);
+            },
+
+            compTaxAmount() {
+                return (this.taxAmount / 100).toFixed(2);
+            },
+
+            balanceClass() {
+                return this.currentAmount >= 10000 ? 'green' : 'red';
+            }
+        },
+    });
+
+    app.mount('#myApp');
+</script>
+</body>
+</html>
